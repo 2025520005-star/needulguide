@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEEduGuide — Education Guide for Northeast India</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f7f9f7;color:#1a1a1a;min-height:100vh}
+a{color:inherit;text-decoration:none}
+nav{background:#fff;border-bottom:1px solid #e8ede8;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100}
+.logo{font-size:20px;font-weight:700;color:#0f6e56}.logo span{color:#1a1a1a}
+.nav-links{display:flex;gap:1.5rem;font-size:14px;color:#555}.nav-links a:hover{color:#0f6e56}
+.nav-cta{background:#0f6e56;color:#fff!important;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600}
+.hero{background:#fff;border-bottom:1px solid #e8ede8;padding:3.5rem 2rem 3rem;text-align:center}
+.hero h1{font-size:36px;font-weight:700;color:#0a3d2b;line-height:1.25;margin-bottom:12px}
+.hero h1 span{color:#1D9E75}
+.hero p{font-size:16px;color:#555;max-width:520px;margin:0 auto 2rem;line-height:1.7}
+.search-wrap{display:flex;gap:10px;max-width:500px;margin:0 auto}
+.search-wrap input{flex:1;padding:12px 16px;border:1.5px solid #d4e8dc;border-radius:10px;font-size:15px;outline:none;background:#f7f9f7}
+.search-wrap input:focus{border-color:#1D9E75}
+.search-wrap button{background:#0f6e56;color:#fff;border:none;border-radius:10px;padding:12px 22px;font-size:15px;font-weight:600;cursor:pointer}
+.stats{display:flex;background:#fff;border-bottom:1px solid #e8ede8}
+.stat{flex:1;text-align:center;padding:1.25rem;border-right:1px solid #e8ede8}.stat:last-child{border-right:none}
+.stat-num{font-size:26px;font-weight:700;color:#0f6e56}.stat-label{font-size:13px;color:#777;margin-top:3px}
+.container{max-width:1100px;margin:0 auto;padding:2rem}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.section-head h2{font-size:20px;font-weight:700;color:#0a3d2b}
+.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:2.5rem}
+.cat{background:#fff;border:1.5px solid #e8ede8;border-radius:14px;padding:1.25rem 1rem;cursor:pointer;transition:all .15s;text-align:center}
+.cat:hover,.cat.active{border-color:#1D9E75;background:#f0faf5}
+.cat-icon{font-size:28px;margin-bottom:8px}.cat-name{font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:2px}.cat-count{font-size:12px;color:#888}
+.courses{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.course{background:#fff;border:1.5px solid #e8ede8;border-radius:14px;padding:1.25rem;cursor:pointer;transition:border-color .15s}
+.course:hover{border-color:#1D9E75}
+.course-badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-bottom:10px}
+.badge-medical{background:#e1f5ee;color:#0f6e56}.badge-engineering{background:#e6f1fb;color:#185fa5}
+.badge-arts{background:#faeeda;color:#854f0b}.badge-business{background:#eeedfe;color:#3c3489}
+.badge-law{background:#faece7;color:#993c1d}.badge-education{background:#fbeaf0;color:#993556}
+.course h3{font-size:15px;font-weight:600;color:#1a1a1a;margin-bottom:4px}
+.course-meta{font-size:12px;color:#888;margin-bottom:12px}
+.course-desc{font-size:13px;color:#555;line-height:1.6;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.course-footer{display:flex;align-items:center;justify-content:space-between}
+.learn-btn{font-size:13px;font-weight:600;color:#1D9E75;background:none;border:none;cursor:pointer;padding:0}
+.detail-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center;padding:20px}
+.detail-overlay.open{display:flex}
+.detail-panel{background:#fff;border-radius:18px;width:100%;max-width:620px;max-height:88vh;overflow-y:auto;padding:2rem}
+.detail-close{float:right;background:none;border:none;font-size:22px;cursor:pointer;color:#888}
+.detail-badge{display:inline-block;font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;margin-bottom:12px}
+.detail-panel h2{font-size:22px;font-weight:700;color:#0a3d2b;margin-bottom:6px}
+.detail-duration{font-size:14px;color:#777;margin-bottom:1.25rem}
+.detail-section{margin-bottom:1.25rem}
+.detail-section h4{font-size:12px;font-weight:700;color:#0a3d2b;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+.detail-section p,.detail-section li{font-size:14px;color:#444;line-height:1.7}
+.detail-section ul{padding-left:1.2rem}
+.colleges-list{display:flex;flex-direction:column;gap:8px}
+.college-item{background:#f7f9f7;border-radius:10px;padding:10px 14px}
+.college-name{font-size:14px;font-weight:600;color:#1a1a1a}.college-meta{font-size:12px;color:#777;margin-top:2px}
+.apply-btn{display:block;width:100%;background:#0f6e56;color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;text-align:center;margin-top:1.5rem;text-decoration:none}
+.apply-btn:hover{background:#085041}
+.colleges-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:2.5rem}
+.college-card{background:#fff;border:1.5px solid #e8ede8;border-radius:14px;padding:1.25rem}
+.college-card h3{font-size:15px;font-weight:600;color:#1a1a1a;margin-bottom:4px}
+.college-card .loc{font-size:12px;color:#888;margin-bottom:8px}
+.college-card .fees{font-size:13px;color:#0f6e56;font-weight:600;margin-bottom:10px}
+.college-tag{display:inline-block;font-size:11px;padding:2px 8px;background:#f0faf5;color:#0f6e56;border-radius:6px;margin:2px}
+.cta-bar{background:#0a3d2b;color:#fff;border-radius:16px;padding:2.5rem 2rem;text-align:center;margin-bottom:2.5rem}
+.cta-bar h2{font-size:22px;font-weight:700;margin-bottom:8px}
+.cta-bar p{font-size:14px;opacity:.8;margin-bottom:1.5rem}
+.cta-bar a{display:inline-block;background:#1D9E75;color:#fff;padding:12px 28px;border-radius:10px;font-weight:700;font-size:15px}
+.admin-link{position:fixed;bottom:20px;right:20px;background:#0a3d2b;color:#fff;padding:10px 18px;border-radius:30px;font-size:13px;font-weight:600;cursor:pointer;z-index:50;border:none;box-shadow:0 2px 12px rgba(0,0,0,.2)}
+.admin-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto}
+.admin-overlay.open{display:flex}
+.admin-panel{background:#fff;border-radius:18px;width:100%;max-width:700px;padding:2rem;margin-bottom:40px}
+.admin-tabs{display:flex;gap:0;margin-bottom:1.5rem;border-bottom:1.5px solid #e8ede8}
+.admin-tab{padding:8px 20px;font-size:14px;font-weight:600;color:#888;cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1.5px}
+.admin-tab.active{color:#0f6e56;border-bottom-color:#1D9E75}
+.step-box{background:#f7f9f7;border-radius:12px;padding:1.25rem;margin-bottom:12px;border-left:4px solid #1D9E75}
+.step-num{font-size:11px;font-weight:700;color:#1D9E75;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.step-title{font-size:15px;font-weight:700;color:#0a3d2b;margin-bottom:4px}
+.step-desc{font-size:13px;color:#555;line-height:1.6}
+.step-desc code{background:#e8f5ee;color:#0f6e56;padding:2px 6px;border-radius:4px;font-size:12px;font-family:monospace}
+.url-input-wrap{display:flex;gap:8px;margin-top:10px}
+.url-input-wrap input{flex:1;padding:10px 12px;border:1.5px solid #e8ede8;border-radius:8px;font-size:13px;font-family:inherit;outline:none}
+.url-input-wrap input:focus{border-color:#1D9E75}
+.url-input-wrap button{background:#0f6e56;color:#fff;border:none;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.status-badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:20px;margin-bottom:1rem}
+.status-connected{background:#e1f5ee;color:#0f6e56}
+.status-disconnected{background:#faeeda;color:#854f0b}
+.status-dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+.sheet-columns{background:#fff;border:1.5px solid #e8ede8;border-radius:10px;overflow:hidden;margin-top:8px}
+.col-header{display:grid;font-size:11px;font-weight:700;color:#888;text-transform:uppercase;padding:8px 12px;background:#f7f9f7;border-bottom:1px solid #e8ede8;letter-spacing:.04em}
+.col-row{display:grid;font-size:13px;color:#444;padding:7px 12px;border-bottom:1px solid #f0f0f0}
+.col-row:last-child{border-bottom:none}
+.col-name{font-weight:600;color:#0a3d2b}
+.reload-btn{background:#f0faf5;color:#0f6e56;border:1.5px solid #b3dfc9;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;margin-top:10px}
+.loading-bar{text-align:center;padding:2rem;color:#888;font-size:14px}
+.toast{position:fixed;bottom:80px;right:20px;background:#0f6e56;color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;z-index:500;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+footer{background:#0a3d2b;color:#9FE1CB;text-align:center;padding:1.5rem;font-size:13px;margin-top:2rem}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">NE<span>Edu</span>Guide</div>
+  <div class="nav-links">
+    <a href="#courses">Courses</a>
+    <a href="#colleges">Colleges</a>
+    <a href="#inquiry" class="nav-cta">Get Free Guidance</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>Find your path to the<br><span>right college</span></h1>
+  <p>Your trusted education guide for students across Northeast India — nursing, engineering, arts, law, and more.</p>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="Search courses or colleges..." oninput="handleSearch()"/>
+    <button onclick="handleSearch()">Search</button>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-num" id="statCourses">—</div><div class="stat-label">Courses listed</div></div>
+  <div class="stat"><div class="stat-num" id="statColleges">—</div><div class="stat-label">Colleges listed</div></div>
+  <div class="stat"><div class="stat-num">8</div><div class="stat-label">States covered</div></div>
+</div>
+
+<div class="container">
+  <div id="courses">
+    <div class="section-head"><h2>Browse by field</h2></div>
+    <div class="cats" id="catsGrid"></div>
+    <div class="section-head"><h2 id="coursesSectionTitle">All courses</h2></div>
+    <div class="courses" id="coursesGrid"><div class="loading-bar">Loading courses...</div></div>
+  </div>
+  <br><br>
+  <div id="colleges">
+    <div class="section-head"><h2>Colleges in Northeast India</h2></div>
+    <div class="colleges-grid" id="collegesGrid"><div class="loading-bar">Loading colleges...</div></div>
+  </div>
+  <div class="cta-bar" id="inquiry">
+    <h2>Not sure which course is right for you?</h2>
+    <p>Get free personalised guidance — we help students from all 8 Northeast states find the right college.</p>
+    <a href="https://form.jotform.com/261734643669064" target="_blank">Get Free Guidance →</a>
+  </div>
+</div>
+
+<footer>© 2026 NEEduGuide — Empowering Northeast India students | All 8 states covered</footer>
+
+<div class="detail-overlay" id="detailOverlay">
+  <div class="detail-panel">
+    <button class="detail-close" onclick="closeDetail()">✕</button>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+<button class="admin-link" onclick="openAdmin()">⚙ Admin</button>
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
+      <h2 style="font-size:20px;font-weight:700;color:#0a3d2b">Admin panel</h2>
+      <button onclick="closeAdmin()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#888">✕</button>
+    </div>
+    <div class="admin-tabs">
+      <div class="admin-tab active" onclick="switchTab('setup')">Setup</div>
+      <div class="admin-tab" onclick="switchTab('courses')">Courses sheet</div>
+      <div class="admin-tab" onclick="switchTab('colleges')">Colleges sheet</div>
+    </div>
+
+    <div id="tabSetup">
+      <p style="font-size:14px;color:#555;margin-bottom:1.25rem;line-height:1.7">Connect your Google Sheet so courses and colleges show up for <strong>everyone</strong>, on every device — not just your browser.</p>
+
+      <div id="connectionStatus"></div>
+
+      <div class="step-box">
+        <div class="step-num">Step 1</div>
+        <div class="step-title">Make a copy of the template sheet</div>
+        <div class="step-desc">Click the link below to open the Google Sheets template. Then go to <code>File → Make a copy</code> to save it to your own Google account.<br><br>
+        <a href="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms/edit" target="_blank" style="color:#1D9E75;font-weight:600;font-size:13px">Open template sheet →</a>
+        </div>
+      </div>
+
+      <div class="step-box">
+        <div class="step-num">Step 2</div>
+        <div class="step-title">Publish your sheet to the web</div>
+        <div class="step-desc">In your copied sheet, go to <code>File → Share → Publish to web</code>. Select <code>Entire Document</code> and <code>Comma-separated values (.csv)</code>. Click <code>Publish</code>. Copy the URL it gives you.</div>
+      </div>
+
+      <div class="step-box">
+        <div class="step-num">Step 3</div>
+        <div class="step-title">Paste your sheet URL here</div>
+        <div class="step-desc">Paste the CSV publish URL below and click Connect. Your website will start reading from your sheet immediately.
+          <div class="url-input-wrap">
+            <input type="text" id="sheetUrl" placeholder="https://docs.google.com/spreadsheets/d/..."/>
+            <button onclick="connectSheet()">Connect</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="reload-btn" onclick="loadFromSheet()">↺ Reload data from sheet</button>
+    </div>
+
+    <div id="tabCourses" style="display:none">
+      <p style="font-size:14px;color:#555;margin-bottom:1rem;line-height:1.7">Add and edit courses directly in your Google Sheet. Use these exact column names:</p>
+      <div class="sheet-columns">
+        <div class="col-header" style="grid-template-columns:1fr 1fr 2fr">
+          <span>Column name</span><span>Example</span><span>What to put</span>
+        </div>
+        <div class="col-row" style="grid-template-columns:1fr 1fr 2fr"><span class="col-name">name</span><span>BSc Nursing</span><span>Full course name</span></div>
+        <div class="col-row" style="grid-template-columns:1fr 1fr 2fr"><span class="col-name">category</span><span>medical</span><span>medical / engineering / arts / business / law / education</span></div>
+        <div class="col-row" style="grid-template-columns:1fr 1fr 2fr"><span class="col-name">duration</span><span>4 years</span><span>How long the course takes</span></div>
+        <div class="col-row" style="grid-template-columns:1fr 1fr 2fr"><span class="col-name">eligibility</span><span>10+2 PCB, 45%</span><span>Minimum qualification needed</span></div>
+        <div class="col-row" style="grid-template-columns:1fr 1fr 2fr"><span class="col-name">description</span><span>A nursing degree...</span><span>Short description of the course</span></div>
+        <div class="col-row" style="grid-template-columns:1fr 1fr 2fr"><span class="col-name">careers</span><span>Nurse, Manager</span><span>Comma-separated career options</span></div>
+        <div class="col-row" style="grid-template-columns:1fr 1fr 2fr"><span class="col-name">fees</span><span>₹60,000–₹1,50,000/yr</span><span>Fee range for private colleges</span></div>
+      </div>
+      <p style="font-size:13px;color:#888;margin-top:10px">After editing the sheet, click "Reload data from sheet" in the Setup tab.</p>
+    </div>
+
+    <div id="tabColleges" style="display:none">
+      <p style="font-size:14px;color:#555;margin-bottom:1rem;line-height:1.7">Add colleges in the second sheet tab named <code style="background:#e8f5ee;color:#0f6e56;padding:2px 6px;border-radius:4px;font-size:12px">Colleges</code>. Use these column names:</p>
+      <div class="sheet-columns">
+        <div class="col-header" style="grid-template-columns:1fr 1fr 2fr">
+          <span>Column name</span><span>Example</span><span>What to put</span>
+        </div>
+        <div class="col-row" style="grid-template-columns:1fr 1fr 2fr"><span class="col-name">name</span><span>NIMS Dimapur</span><span>Full college name</span></div>
+        <div class="col-row" style="grid-template-columns:1fr 1fr 2fr"><span class="col-name">location</span><span>Dimapur, Nagaland</span><span>City and state</span></div>
+        <div class="col-row" style="grid-template-columns:1fr 1fr 2fr"><span class="col-name">type</span><span>Private</span><span>Government / Private / Mission</span></div>
+        <div class="col-row" style="grid-template-columns:1fr 1fr 2fr"><span class="col-name">fees</span><span>₹90,000/year</span><span>Approximate annual fees</span></div>
+        <div class="col-row" style="grid-template-columns:1fr 1fr 2fr"><span class="col-name">courses</span><span>BSc Nursing, GNM</span><span>Comma-separated courses offered</span></div>
+        <div class="col-row" style="grid-template-columns:1fr 1fr 2fr"><span class="col-name">contact</span><span>www.nims.edu.in</span><span>Website or phone number</span></div>
+      </div>
+      <p style="font-size:13px;color:#888;margin-top:10px">After editing the sheet, click "Reload data from sheet" in the Setup tab.</p>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const CAT={
+  medical:{label:'Medical & Nursing',icon:'🏥',badge:'badge-medical'},
+  engineering:{label:'Engineering & Tech',icon:'💻',badge:'badge-engineering'},
+  arts:{label:'Arts & Humanities',icon:'🎨',badge:'badge-arts'},
+  business:{label:'Business & MBA',icon:'💼',badge:'badge-business'},
+  law:{label:'Law',icon:'⚖️',badge:'badge-law'},
+  education:{label:'Education & B.Ed',icon:'📚',badge:'badge-education'},
+};
+
+const FALLBACK_COURSES=[
+  {id:'c1',name:'BSc Nursing',category:'medical',duration:'4 years',eligibility:'10+2 PCB, min 45%',description:'A professional undergraduate degree training students in patient care, clinical skills, and healthcare management.',careers:'Staff Nurse,Nurse Educator,Hospital Manager,Community Health Worker',fees:'₹60,000 – ₹1,50,000/year'},
+  {id:'c2',name:'GNM Nursing',category:'medical',duration:'3 years + 6 months internship',eligibility:'10+2 any stream, min 40%',description:'General Nursing & Midwifery — one of the most sought-after nursing diplomas, preparing graduates for bedside nursing and midwifery care.',careers:'Staff Nurse,Midwife,Community Nurse,NGO Health Worker',fees:'₹50,000 – ₹1,20,000/year'},
+  {id:'c3',name:'MBBS',category:'medical',duration:'5.5 years',eligibility:'10+2 PCB, NEET required',description:'Bachelor of Medicine and Surgery — the gateway to becoming a licensed medical doctor in India.',careers:'Doctor,Surgeon,Medical Researcher,Public Health Officer',fees:'₹2,00,000 – ₹10,00,000/year'},
+  {id:'c4',name:'BTech CSE',category:'engineering',duration:'4 years',eligibility:'10+2 PCM, min 50%',description:'Bachelor of Technology in Computer Science — covers programming, software development, AI, and data science.',careers:'Software Engineer,Data Analyst,App Developer,IT Manager',fees:'₹80,000 – ₹2,00,000/year'},
+  {id:'c5',name:'BA Social Work',category:'arts',duration:'3 years',eligibility:'10+2 any stream',description:'Trains students in community development, social welfare, NGO management, and counselling — highly relevant for Northeast India.',careers:'NGO Officer,Community Worker,Government Welfare Officer,Counsellor',fees:'₹40,000 – ₹80,000/year'},
+  {id:'c6',name:'BBA',category:'business',duration:'3 years',eligibility:'10+2 any stream',description:'Bachelor of Business Administration — foundational business degree covering management, marketing, and finance.',careers:'Business Manager,Entrepreneur,Bank Officer,Sales Executive',fees:'₹50,000 – ₹1,00,000/year'},
+  {id:'c7',name:'LLB',category:'law',duration:'3 years',eligibility:'Any graduate degree',description:'Bachelor of Laws — qualifies graduates to practise as lawyers in Indian courts after Bar Council enrollment.',careers:'Lawyer,Legal Advisor,Government Legal Officer,Corporate Counsel',fees:'₹30,000 – ₹80,000/year'},
+  {id:'c8',name:'B.Ed',category:'education',duration:'2 years',eligibility:'Any graduate degree, min 50%',description:'Bachelor of Education — mandatory for teaching in secondary schools, covering pedagogy and curriculum design.',careers:'School Teacher,Principal,Education Officer,Curriculum Designer',fees:'₹40,000 – ₹80,000/year'},
+];
+
+const FALLBACK_COLLEGES=[
+  {id:'col1',name:'Nagaland Institute of Medical Sciences (NIMS)',location:'Dimapur, Nagaland',type:'Private',fees:'₹90,000/year',courses:'BSc Nursing, GNM, BPharm',contact:'www.nims.edu.in'},
+  {id:'col2',name:'Don Bosco College',location:'Dimapur, Nagaland',type:'Mission/Church',fees:'₹50,000/year',courses:'BA Social Work, BBA, B.Ed',contact:''},
+  {id:'col3',name:'Nagaland University',location:'Lumami, Nagaland',type:'Government',fees:'₹20,000/year',courses:'BA, BSc, BBA, LLB, B.Ed',contact:'www.nagalanduniversity.ac.in'},
+  {id:'col4',name:'Assam Medical College',location:'Dibrugarh, Assam',type:'Government',fees:'₹30,000/year',courses:'MBBS, BSc Nursing, GNM',contact:'www.amch.edu.in'},
+  {id:'col5',name:'TISS Guwahati',location:'Guwahati, Assam',type:'Government',fees:'₹25,000/year',courses:'BA Social Work, MSW',contact:'www.tiss.edu'},
+];
+
+let courses=[];
+let colleges=[];
+let activeFilter='all';
+let sheetConnected=false;
+
+function showToast(msg,err){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.background=err?'#e24b4a':'#0f6e56';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+function parseCSV(text){
+  const lines=text.trim().split('\n');
+  if(lines.length<2)return[];
+  const headers=lines[0].split(',').map(h=>h.trim().replace(/^"|"$/g,'').toLowerCase());
+  return lines.slice(1).map((line,idx)=>{
+    const vals=[];let cur='';let inQ=false;
+    for(let i=0;i<line.length;i++){
+      if(line[i]==='"'){inQ=!inQ;}
+      else if(line[i]===','&&!inQ){vals.push(cur.trim());cur='';}
+      else cur+=line[i];
+    }
+    vals.push(cur.trim());
+    const obj={id:'row'+idx};
+    headers.forEach((h,i)=>obj[h]=(vals[i]||'').replace(/^"|"$/g,'').trim());
+    return obj;
+  }).filter(r=>r.name);
+}
+
+function getSheetCSVUrl(url,sheetName){
+  try{
+    const m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if(!m)return null;
+    const id=m[1];
+    const gid=sheetName==='Colleges'?'1':'0';
+    return `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv&sheet=${sheetName}`;
+  }catch(e){return null;}
+}
+
+async function loadFromSheet(){
+  const url=localStorage.getItem('neeg_sheet_url');
+  if(!url){useFallback();return;}
+  showToast('Loading from Google Sheet...');
+  try{
+    const coursesUrl=getSheetCSVUrl(url,'Courses');
+    const collegesUrl=getSheetCSVUrl(url,'Colleges');
+    const [cRes,colRes]=await Promise.all([fetch(coursesUrl),fetch(collegesUrl)]);
+    if(!cRes.ok&&!colRes.ok)throw new Error('Could not fetch sheet');
+    if(cRes.ok){const txt=await cRes.text();const parsed=parseCSV(txt);if(parsed.length){courses=parsed;}}
+    if(colRes.ok){const txt=await colRes.text();const parsed=parseCSV(txt);if(parsed.length){colleges=parsed;}}
+    if(!courses.length)courses=FALLBACK_COURSES;
+    if(!colleges.length)colleges=FALLBACK_COLLEGES;
+    sheetConnected=true;
+    renderAll();
+    showToast('Data loaded from your Google Sheet!');
+  }catch(e){
+    useFallback();
+    showToast('Could not connect to sheet — showing sample data',true);
+  }
+  updateConnectionStatus();
+}
+
+function useFallback(){
+  courses=FALLBACK_COURSES;
+  colleges=FALLBACK_COLLEGES;
+  sheetConnected=false;
+  renderAll();
+  updateConnectionStatus();
+}
+
+function connectSheet(){
+  const url=document.getElementById('sheetUrl').value.trim();
+  if(!url||!url.includes('docs.google.com')){showToast('Please enter a valid Google Sheets URL',true);return;}
+  localStorage.setItem('neeg_sheet_url',url);
+  loadFromSheet();
+}
+
+function updateConnectionStatus(){
+  const url=localStorage.getItem('neeg_sheet_url');
+  const el=document.getElementById('connectionStatus');
+  if(url&&sheetConnected){
+    el.innerHTML=`<div class="status-badge status-connected"><span class="status-dot"></span>Connected to Google Sheet</div>`;
+    document.getElementById('sheetUrl').value=url;
+  }else if(url){
+    el.innerHTML=`<div class="status-badge status-disconnected"><span class="status-dot"></span>Sheet URL saved — showing sample data until connected</div>`;
+    document.getElementById('sheetUrl').value=url;
+  }else{
+    el.innerHTML=`<div class="status-badge status-disconnected"><span class="status-dot"></span>Not connected — showing sample data</div>`;
+  }
+}
+
+function renderStats(){
+  document.getElementById('statCourses').textContent=courses.length;
+  document.getElementById('statColleges').textContent=colleges.length;
+}
+
+function renderCats(){
+  const counts={};courses.forEach(c=>{const cat=(c.category||c.cat||'').toLowerCase();counts[cat]=(counts[cat]||0)+1;});
+  let h=`<div class="cat ${activeFilter==='all'?'active':''}" onclick="filterCat('all')"><div class="cat-icon">🎓</div><div class="cat-name">All courses</div><div class="cat-count">${courses.length} courses</div></div>`;
+  Object.entries(CAT).forEach(([k,m])=>{if(counts[k])h+=`<div class="cat ${activeFilter===k?'active':''}" onclick="filterCat('${k}')"><div class="cat-icon">${m.icon}</div><div class="cat-name">${m.label}</div><div class="cat-count">${counts[k]} course${counts[k]!==1?'s':''}</div></div>`;});
+  document.getElementById('catsGrid').innerHTML=h;
+}
+
+function filterCat(cat){activeFilter=cat;renderCats();renderCourses(document.getElementById('searchInput').value.toLowerCase());document.getElementById('coursesSectionTitle').textContent=cat==='all'?'All courses':(CAT[cat]?.label||cat)+' courses';}
+
+function renderCourses(q=''){
+  let f=courses;
+  const cat=activeFilter;
+  if(cat!=='all')f=f.filter(c=>(c.category||c.cat||'').toLowerCase()===cat);
+  if(q)f=f.filter(c=>(c.name||'').toLowerCase().includes(q)||(c.description||c.desc||'').toLowerCase().includes(q));
+  if(!f.length){document.getElementById('coursesGrid').innerHTML='<p style="color:#888;font-size:14px;grid-column:1/-1;padding:1rem 0">No courses found.</p>';return;}
+  document.getElementById('coursesGrid').innerHTML=f.map((c,i)=>{
+    const cat=(c.category||c.cat||'').toLowerCase();
+    const m=CAT[cat]||{label:cat,badge:''};
+    const desc=c.description||c.desc||'';
+    const dur=c.duration||'';
+    const elig=c.eligibility||'';
+    const fees=c.fees||'';
+    return`<div class="course" onclick="openDetail(${i})"><span class="course-badge ${m.badge}">${m.label}</span><h3>${c.name}</h3><div class="course-meta">⏱ ${dur} &nbsp;|&nbsp; ${elig}</div><div class="course-desc">${desc}</div><div class="course-footer"><button class="learn-btn">Learn more →</button><span style="font-size:12px;color:#888">${fees}</span></div></div>`;
+  }).join('');
+}
+
+function renderColleges(){
+  if(!colleges.length){document.getElementById('collegesGrid').innerHTML='<p style="color:#888;font-size:14px">No colleges yet.</p>';return;}
+  document.getElementById('collegesGrid').innerHTML=colleges.map(col=>{
+    const tags=(col.courses||'').split(',').map(s=>`<span class="college-tag">${s.trim()}</span>`).join('');
+    return`<div class="college-card"><h3>${col.name}</h3><div class="loc">📍 ${col.location||col.loc||''} &nbsp;·&nbsp; ${col.type||''}</div><div class="fees">${col.fees||''}</div><div>${tags}</div>${col.contact?`<div style="font-size:12px;color:#888;margin-top:8px">🌐 ${col.contact}</div>`:''}</div>`;
+  }).join('');
+}
+
+function handleSearch(){renderCourses(document.getElementById('searchInput').value.toLowerCase());}
+
+function openDetail(idx){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  let f=courses;
+  if(activeFilter!=='all')f=f.filter(c=>(c.category||c.cat||'').toLowerCase()===activeFilter);
+  if(q)f=f.filter(c=>(c.name||'').toLowerCase().includes(q)||(c.description||c.desc||'').toLowerCase().includes(q));
+  const c=f[idx];if(!c)return;
+  const cat=(c.category||c.cat||'').toLowerCase();
+  const m=CAT[cat]||{label:cat,badge:''};
+  const desc=c.description||c.desc||'';
+  const careers=(c.careers||'').split(',').map(s=>`<li>${s.trim()}</li>`).join('');
+  const relCols=colleges.filter(col=>(col.courses||'').toLowerCase().includes((c.name||'').toLowerCase()));
+  const colHtml=relCols.length?relCols.map(col=>`<div class="college-item"><div class="college-name">${col.name}</div><div class="college-meta">📍 ${col.location||col.loc||''} &nbsp;·&nbsp; ${col.type||''} &nbsp;·&nbsp; ${col.fees||''}</div></div>`).join(''):'<p style="font-size:13px;color:#888">No colleges listed for this course yet.</p>';
+  document.getElementById('detailContent').innerHTML=`<span class="detail-badge ${m.badge}">${m.label}</span><h2>${c.name}</h2><div class="detail-duration">⏱ ${c.duration||''} &nbsp;|&nbsp; Eligibility: ${c.eligibility||''}</div><div class="detail-section"><h4>About this course</h4><p>${desc}</p></div>${c.fees?`<div class="detail-section"><h4>Fee range</h4><p>${c.fees}</p></div>`:''} ${careers?`<div class="detail-section"><h4>Career options</h4><ul>${careers}</ul></div>`:''}<div class="detail-section"><h4>Colleges offering this course</h4><div class="colleges-list">${colHtml}</div></div><a href="https://form.jotform.com/261734643669064" target="_blank" class="apply-btn">Get free admission guidance →</a>`;
+  document.getElementById('detailOverlay').classList.add('open');
+}
+
+function closeDetail(){document.getElementById('detailOverlay').classList.remove('open');}
+function openAdmin(){document.getElementById('adminOverlay').classList.add('open');updateConnectionStatus();}
+function closeAdmin(){document.getElementById('adminOverlay').classList.remove('open');}
+function switchTab(tab){
+  ['setup','courses','colleges'].forEach(t=>{
+    document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1)).style.display=t===tab?'block':'none';
+  });
+  document.querySelectorAll('.admin-tab').forEach((el,i)=>el.classList.toggle('active',['setup','courses','colleges'][i]===tab));
+}
+
+function renderAll(){renderStats();renderCats();renderCourses();renderColleges();}
+
+document.getElementById('detailOverlay').addEventListener('click',function(e){if(e.target===this)closeDetail();});
+document.getElementById('adminOverlay').addEventListener('click',function(e){if(e.target===this)closeAdmin();});
+
+loadFromSheet();
+</script>
+</body>
+</html>
